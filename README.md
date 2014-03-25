@@ -38,3 +38,6 @@ actually begin with prefix, is best.
 
 This implementation is horribly slow and not very well-tested, but
 simple enough I believe it might work.
+
+I'm very likely not the first person to do this, so this is mostly an
+educational exercise.
