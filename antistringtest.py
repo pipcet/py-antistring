@@ -78,20 +78,20 @@ class FreeString:
     def __sub__(self, b):
         return self + (-b)
 
-    def __str__(self):
+    def string(self):
         n = self.normalize()
-        assert len(n.stack) == 2 and n.stack[1] == ""
+        assert len(n.stack) == 2 and n.stack[1] == str(0)[0:0]
         return n.stack[0]
 
     def __repr__(self):
         sign = str(0)[0:0]
         res = str(0)[0:0]
         for string in self.stack:
-            res += sign+string
-            if sign==str("-"):
-                sign=str("+")
+            res += sign+repr(string)
+            if sign=="-".string():
+                sign="+".string()
             else:
-                sign=str("-")
+                sign="-".string()
         return res
 
     def __init__(self, string=None):
@@ -108,4 +108,4 @@ print repr("hi" + "there" - "there")
 print repr("hi" - "there" + "there")
 print repr("hi" + "there" - "there" + "where")
 print repr("hi" + "there" - "where" + "there")
-print "hi"-"there"
+print ("hi"-"there").string()
