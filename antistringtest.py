@@ -79,7 +79,9 @@ class FreeString:
         return self + (-b)
 
     def __str__(self):
-        return self.normalize().stack[0]
+        n = self.normalize()
+        assert len(n.stack) == 2 and n.stack[1] == ""
+        return n.stack[0]
 
     def __repr__(self):
         sign = str(0)[0:0]
@@ -106,3 +108,4 @@ print repr("hi" + "there" - "there")
 print repr("hi" - "there" + "there")
 print repr("hi" + "there" - "there" + "where")
 print repr("hi" + "there" - "where" + "there")
+print "hi"-"there"
