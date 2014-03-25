@@ -6,7 +6,29 @@
 # this is incredibly dumb and slow
 
 class FreeString:
+    """Implementation of the free group over whatever alphabet our
+    strings use. Meant to be used with a modified Python interpreter
+    that converts string constants to FreeString() calls.
+
+    Terminology: a string is what it always was. An antistring is the
+    formal inverse of a string. Free strings are concatenations of
+    strings and antistrings. Normalized free strings are
+    concatenations of strings and antistrings that cannot be cancelled
+    out further. Two freestrings are equivalent iff their normalized
+    forms are identical.
+
+    The antistring -"abc" is equivalent to -"c"-"b"-"a".
+
+    Implementation: We implement a free string as an alternating list
+    of strings and antistrings. That means our letters aren't in order
+    for cancellation, but it saves our hypothetical users from having
+    to read backwards.
+
+    """
+
     def letters(self):
+        """Return letters that make up a freestring, and their exponents.
+        """
         sign = 1
         res = []
         for string in self.stack:
@@ -16,6 +38,10 @@ class FreeString:
         return res
 
     def normalize(self):
+        """Normalize a freestring (non-destructively) by cancelling out
+        letters and their antiletters, one by one.
+
+        """
         letters = self.letters()
 
         i = 0
@@ -53,6 +79,11 @@ class FreeString:
         return res
 
     def __add__(self, b):
+        """Concatenate two free strings. This is the group operation of the
+        free group, which we have chosen to denote by addition rather
+        than multiplication.
+
+        """
         st0 = self.stack
         st1 = b.stack
 
@@ -68,6 +99,10 @@ class FreeString:
         return res.normalize()
 
     def __neg__(self):
+        """Compute the inverse of a free string. Turns strings into
+        antistrings and vice versa.
+
+        """
         res = FreeString();
         res.stack.append(str(0)[0:0])
         res.stack += self.stack
@@ -79,13 +114,19 @@ class FreeString:
         return self + (-b)
 
     def string(self):
+        """Convert a free string to a string, croaking if this is impossible.
+        """
         n = self.normalize()
         assert len(n.stack) == 2 and n.stack[1] == str(0)[0:0]
         return n.stack[0]
 
     def __repr__(self):
-        sign = str(0)[0:0]
-        res = str(0)[0:0]
+        """Representation of a free string. This assumes whatever python we're
+        using recognizes string constants as free strings
+
+        """
+        sign = "".string()
+        res = "".string()
         for string in self.stack:
             res += sign+repr(string)
             if sign=="-".string():
